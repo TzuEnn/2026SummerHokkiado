@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>🌻 2026夏 北海道運行表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C2B33;
+  --ink-2:#243944;
+  --paper:#F6F1E4;
+  --paper-2:#EFE7D3;
+  --gold:#C89B3C;
+  --gold-soft:#E4C878;
+  --teal:#3E6E68;
+  --teal-soft:#7FA79F;
+  --coral:#C1592E;
+  --text-soft:#5B6A70;
+  --text-onink:#EDE6D3;
+  --line:#D8CDAF;
+  --radius:14px;
+  --shadow:0 8px 24px rgba(28,43,51,0.12);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--ink);
+  color:var(--text-onink);
+  font-family:'Noto Sans TC',sans-serif;
+  min-height:100vh;
+  padding-bottom:84px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+
+/* ===== Top header ===== */
+.topbar{
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(180deg, var(--ink) 0%, var(--ink) 70%, rgba(28,43,51,0) 100%);
+  padding:18px 20px 10px;
+}
+.topbar .eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gold-soft); margin:0 0 4px;
+}
+.topbar h1{
+  font-family:'Shippori Mincho',serif;
+  font-weight:800; font-size:26px; margin:0; letter-spacing:0.02em;
+  color:var(--text-onink);
+}
+.topbar .sub{
+  font-size:12.5px; color:var(--teal-soft); margin-top:4px;
+}
+
+/* ===== Day rail (train-platform style selector) ===== */
+.day-rail{
+  display:flex; gap:8px; overflow-x:auto; padding:14px 20px 6px;
+  scrollbar-width:none;
+}
+.day-rail::-webkit-scrollbar{display:none;}
+.day-chip{
+  flex:0 0 auto;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  width:52px; height:60px; border-radius:10px;
+  background:var(--ink-2); border:1px solid rgba(228,200,120,0.15);
+  cursor:pointer; transition:all .18s ease;
+}
+.day-chip .d{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:10px;
+  color:var(--teal-soft); letter-spacing:0.05em;
+}
+.day-chip .n{
+  font-family:'Shippori Mincho',serif; font-weight:700; font-size:20px;
+  color:var(--text-onink);
+}
+.day-chip.active{
+  background:var(--gold); border-color:var(--gold);
+}
+.day-chip.active .d{color:#4A3A10;}
+.day-chip.active .n{color:#241B08;}
+
+/* ===== Panels ===== */
+.view{display:none; animation:fadein .25s ease;}
+.view.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+/* Day hero card */
+.day-hero{
+  margin:14px 20px 6px;
+  background:linear-gradient(135deg, var(--teal) 0%, #2E5650 100%);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  position:relative; overflow:hidden;
+}
+.day-hero::after{
+  content:"";
+  position:absolute; right:-30px; top:-30px; width:120px; height:120px;
+  border-radius:50%; background:rgba(228,200,120,0.12);
+}
+.day-hero .theme-label{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.14em;
+  color:var(--gold-soft); text-transform:uppercase;
+}
+.day-hero h2{
+  font-family:'Shippori Mincho',serif; font-size:21px; margin:6px 0 2px; color:#fff;
+}
+.day-hero .date{
+  font-size:12.5px; color:rgba(255,255,255,0.75);
+}
+
+/* Timeline */
+.timeline{ margin:16px 16px 10px; padding:0; }
+.tl-item{
+  display:flex; gap:12px;
+  background:var(--paper);
+  border-radius:var(--radius);
+  padding:12px 14px;
+  margin-bottom:10px;
+  box-shadow:var(--shadow);
+  color:var(--ink);
+}
+.tl-time{
+  flex:0 0 58px;
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12.5px;
+  color:var(--ink);
+  background:var(--gold-soft);
+  border-radius:8px;
+  height:fit-content;
+  padding:5px 0;
+  text-align:center;
+  align-self:flex-start;
+}
+.tl-item.drive .tl-time{background:var(--paper-2); color:var(--text-soft);}
+.tl-body{flex:1; min-width:0;}
+.tl-title{font-weight:700; font-size:14.5px; margin:0 0 3px; color:var(--ink);}
+.tl-desc{font-size:12.8px; color:var(--text-soft); line-height:1.55; margin:0;}
+.tl-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+.tag{
+  font-size:10.5px; padding:3px 8px; border-radius:20px;
+  background:rgba(62,110,104,0.12); color:var(--teal);
+  font-weight:700;
+}
+.tag.cost{background:rgba(193,89,46,0.12); color:var(--coral);}
+.tag.warn{background:rgba(193,89,46,0.16); color:var(--coral);}
+.map-btn{
+  display:inline-flex; align-items:center; gap:5px;
+  margin-top:9px; font-size:12px; font-weight:700;
+  color:#fff; background:var(--ink); border:none;
+  padding:7px 12px; border-radius:20px; text-decoration:none;
+}
+.map-btn svg{width:12px; height:12px;}
+
+.section-note{
+  margin:10px 20px 18px; padding:12px 14px;
+  background:rgba(228,200,120,0.1); border:1px solid rgba(228,200,120,0.25);
+  border-radius:10px; font-size:12.5px; color:var(--gold-soft); line-height:1.6;
+}
+
+/* Generic content card for other tabs */
+.card{
+  margin:14px 16px; background:var(--paper); border-radius:var(--radius);
+  padding:16px 16px; box-shadow:var(--shadow); color:var(--ink);
+}
+.card h3{
+  font-family:'Shippori Mincho',serif; font-size:17px; margin:0 0 10px; color:var(--ink);
+  display:flex; align-items:center; gap:8px;
+}
+.card h3 .num{
+  font-family:'JetBrains Mono',monospace; font-size:11px; background:var(--teal); color:#fff;
+  padding:2px 7px; border-radius:6px;
+}
+.row{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px dashed var(--line);}
+.row:last-child{border-bottom:none;}
+.row .l{font-size:13px; color:var(--text-soft); flex:1;}
+.row .r{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--ink); white-space:nowrap;}
+.row .r.gold{color:var(--coral);}
+
+.page-title{
+  margin:18px 20px 4px; font-family:'Shippori Mincho',serif; font-size:22px; color:var(--text-onink);
+}
+.page-sub{margin:0 20px 4px; font-size:12px; color:var(--teal-soft);}
+
+.check-item{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line);}
+.check-item:last-child{border-bottom:none;}
+.check-item input{width:17px; height:17px; accent-color:var(--teal);}
+.check-item label{font-size:13px; color:var(--ink);}
+
+.budget-total{
+  margin:14px 16px; padding:18px; border-radius:var(--radius);
+  background:linear-gradient(135deg, var(--gold) 0%, #B98A2E 100%);
+  color:#2A2005; box-shadow:var(--shadow);
+}
+.budget-total .lbl{font-size:11.5px; letter-spacing:0.08em; font-family:'JetBrains Mono',monospace;}
+.budget-total .amt{font-family:'Shippori Mincho',serif; font-size:32px; font-weight:800; margin:2px 0;}
+.budget-total .sub{font-size:12px; opacity:0.85;}
+.budget-bar{height:8px; border-radius:6px; background:rgba(0,0,0,0.15); margin-top:10px; overflow:hidden;}
+.budget-bar-fill{height:100%; background:#2A2005; border-radius:6px;}
+
+.pending-list{margin:6px 16px 20px; padding:14px 16px; border-radius:var(--radius); background:rgba(228,200,120,0.08); border:1px dashed rgba(228,200,120,0.4);}
+.pending-list h4{margin:0 0 8px; font-size:12.5px; color:var(--gold-soft); font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;}
+.pending-list ul{margin:0; padding-left:18px; font-size:12.5px; color:var(--text-onink); line-height:1.8;}
+
+/* ===== Bottom nav ===== */
+.bottom-nav{
+  position:fixed; bottom:0; left:0; right:0; z-index:30;
+  display:flex; background:var(--ink-2);
+  border-top:1px solid rgba(228,200,120,0.15);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+}
+.nav-btn{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:none; border:none; color:var(--teal-soft); font-family:'Noto Sans TC',sans-serif;
+  font-size:10.5px; padding:6px 0; cursor:pointer; border-radius:10px;
+}
+.nav-btn svg{width:20px; height:20px;}
+.nav-btn.active{color:var(--gold-soft);}
+.nav-btn.active svg{filter:drop-shadow(0 0 6px rgba(228,200,120,0.5));}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <p class="eyebrow">🌾 Hokkaido / 道央・道北・道南 🚗</p>
+  <h1>🌻 2026夏 北海道 🦀</h1>
+  <p class="sub">🗓️ 2026.08.25 → 09.02 ｜ 9日8夜・3人行 🍨</p>
+</div>
+
+<div id="view-days" class="view active">
+  <div class="day-rail" id="dayRail"></div>
+  <div id="dayHero"></div>
+  <div class="timeline" id="dayTimeline"></div>
+  <div class="section-note" id="dayNote" style="display:none;"></div>
+</div>
+
+<div id="view-transport" class="view">
+  <p class="page-title">🚃 交通總覽</p>
+  <p class="page-sub">機票・巴士・租車・JR，一頁掌握</p>
+
+  <div class="card">
+    <h3><span class="num">✈</span>航班</h3>
+    <div class="row"><div class="l">去程 IT234｜TPE 06:20 → CTS 11:05</div><div class="r">08/26</div></div>
+    <div class="row"><div class="l">回程 IT235｜CTS 12:05 → TPE 15:20</div><div class="r">09/02</div></div>
+    <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=新千歳空港" target="_blank">導航去新千歲機場</a>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">🚌</span>市區大眾運輸</h3>
+    <div class="row"><div class="l">新千歲機場 → 薄野（機場聯絡巴士，約65分）</div><div class="r">¥1,300<br><span style="font-weight:400;color:var(--text-soft);">NT$273</span></div></div>
+    <div class="row"><div class="l">札幌站 → 新千歲機場（JR快速機場線，約40分）</div><div class="r">¥1,150<br><span style="font-weight:400;color:var(--text-soft);">NT$242</span></div></div>
+    <div class="row"><div class="l">Day7 札幌市區地鐵（東西線移動）</div><div class="r">彈性</div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">🚗</span>租車自駕（8/27 - 8/31）</h3>
+    <div class="row"><div class="l">取車：ORIX 札幌南6條店</div><div class="r">8/27 10:30</div></div>
+    <div class="row"><div class="l">還車：ORIX 札幌站前店</div><div class="r">8/31 18:00</div></div>
+    <div class="row"><div class="l">車型｜方案</div><div class="r">6人座・CDW+RAP</div></div>
+    <div class="row"><div class="l">HEP 高速公路5日券</div><div class="r">¥3,200<br><span style="font-weight:400;color:var(--text-soft);">NT$672</span></div></div>
+    <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=ORIX+レンタカー+札幌南6条店" target="_blank">導航去取車點</a>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">🚄</span>Day 0 高鐵</h3>
+    <div class="row"><div class="l">雲林高鐵站 → 桃園高鐵站（結伴同行）</div><div class="r">時間未定</div></div>
+  </div>
+</div>
+
+<div id="view-hotels" class="view">
+  <p class="page-title">🏨 住宿一覽</p>
+  <p class="page-sub">點地圖按鈕可直接導航</p>
+  <div id="hotelList"></div>
+</div>
+
+<div id="view-packing" class="view">
+  <p class="page-title">🧳 行前準備 / 行李清單</p>
+  <p class="page-sub">出發前打勾確認</p>
+  <div id="packingList"></div>
+</div>
+
+<div id="view-budget" class="view">
+  <p class="page-title">💰 個人預算</p>
+  <p class="page-sub">個人分攤花費（非全團總額）・NT$／¥ 對照</p>
+
+  <div class="budget-total">
+    <div class="lbl">TOTAL BUDGET CAP</div>
+    <div class="amt">NT$ 70,000</div>
+    <div class="sub">目前已知花費約 NT$43,682（約¥208,000）・剩餘約 NT$26,318</div>
+    <div class="budget-bar"><div class="budget-bar-fill" style="width:62%;"></div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">¥</span>已確認花費</h3>
+    <div id="budgetKnown"></div>
+  </div>
+
+  <div class="pending-list">
+    <h4>⚠ 尚未確定，不列入總額計算</h4>
+    <ul>
+      <li>旅遊平安險 / 不便險（尚未投保）</li>
+      <li>雲林 ↔ 桃園 高鐵票</li>
+      <li>Day0 華泰名品城晚餐</li>
+      <li>伴手禮 / 藥妝購物</li>
+      <li>各站零星小吃・咖啡</li>
+      <li>市區地鐵 / 公車零錢</li>
+      <li>部分景點門票</li>
+    </ul>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" data-view="days">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+    每日行程
+  </button>
+  <button class="nav-btn" data-view="transport">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16V6a2 2 0 012-2h12a2 2 0 012 2v10"/><path d="M2 16h20l-1.5 4h-17z"/><circle cx="8" cy="20" r="1"/><circle cx="16" cy="20" r="1"/></svg>
+    交通
+  </button>
+  <button class="nav-btn" data-view="hotels">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
+    住宿
+  </button>
+  <button class="nav-btn" data-view="packing">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
+    行李
+  </button>
+  <button class="nav-btn" data-view="budget">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1 1-1.5 3-1.5s3 .8 3 2-1 1.7-3 2-3 1-3 2 1.2 2 3 2 3-.5 3-1.5"/></svg>
+    預算
+  </button>
+</div>
+
+<script>
+const MAPS = (q)=> "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+
+const days = [
+{ d:"DAY 0", n:"0", date:"8/25（二）", title:"台灣出發前夜", theme:"🚄 高鐵南下・機場前哨", note:"綠藤輕旅有凌晨接送服務，不用另外叫車。高鐵班次尚未確定，建議提前訂好從雲林出發的車次。",
+  items:[
+    {t:"—", ti:"雲林高鐵站 → 桃園高鐵站", d:"搭高鐵北上，時間未定，抓晚餐前抵達即可。", drive:true},
+    {t:"傍晚", ti:"步行至綠藤輕旅 Check-in", d:"桃園高鐵站步行約10-15分鐘可達，放行李稍作休息。", map:"綠藤輕旅 Lutel Hotel 桃園", tags:[["住宿","tag"]]},
+    {t:"晚餐", ti:"華泰名品城覓食", d:"步行即達，outlet內選擇多，吃飽早點回飯店。", map:"華泰名品城 GLORIA OUTLETS"},
+    {t:"早睡", ti:"提早休息", d:"明天03:00起床，務必早點入睡。", tags:[["凌晨接送已確認","tag"]]}
+  ]},
+{ d:"DAY 1", n:"1", date:"8/26（三）", title:"降落北海道", theme:"🏙️ 薄野初體驗", note:"",
+  items:[
+    {t:"03:00", ti:"起床梳洗", d:"", drive:true},
+    {t:"03:30", ti:"飯店接送出發", d:"綠藤輕旅凌晨接送服務直達機場。", drive:true},
+    {t:"03:50", ti:"抵達桃園機場 T1", d:"辦理報到、託運行李。", map:"桃園國際機場 第一航廈"},
+    {t:"06:20", ti:"IT234 起飛", d:"台灣虎航，TPE→CTS。", tags:[["✈ IT234","tag"]]},
+    {t:"11:05", ti:"抵達新千歲機場", d:"領行李。", map:"新千歳空港"},
+    {t:"12:00", ti:"機場聯絡巴士 → 薄野", d:"約65分鐘車程直達薄野站周邊。", tags:[["NT$273","cost"]]},
+    {t:"13:00", ti:"Check-in 船舶花園飯店", d:"放行李，稍作休息。", map:"Vessel Hotel Campana Susukino"},
+    {t:"下午", ti:"薄野商圈散策", d:"拍著名的 NIKKA 威士忌大看板。", map:"ニッカウヰスキー看板 すすきの"},
+    {t:"晚餐", ti:"湯咖哩", d:"推薦 Garaku、Suage+ 或 Treasure，濃郁辛香料湯頭配酥脆蔬菜。", map:"Garaku スープカレー 札幌", tags:[["NT$300-400","cost"]]},
+    {t:"晚上", ti:"薄野周邊補給", d:"逛超商 / 藥妝店，早點休息，明早要吃大餐+取車。"}
+  ]},
+{ d:"DAY 2", n:"2", date:"8/27（四）", title:"薄野 → 中富良野 → 富良野", theme:"🚙 取車出發日・🌻花田・🍮布丁", note:"路線更正：札幌到富良野實際上是走三笠IC，不會經過滝川（滝川是北邊往旭川方向的路線），所以拿掉滝川水道卡這站。北星山觀光纜車僅夏季限定營運（約6月中～8月中下旬），8/27是否還開放有一定機率已經停駛，抵達後看現場公告再決定要不要搭。今晚必做：完成明晚 YUKARI 的線上旅客登記＋護照上傳！",
+  items:[
+    {t:"07:30", ti:"飯店招牌吃到飽早餐", d:"蟹腳、鮭魚卵、海鮮勝手丼，吃飽省午餐！"},
+    {t:"09:30", ti:"退房，步行前往租車公司", d:"辦理取車手續，確認 HEP 已設定、導航設好。"},
+    {t:"10:30", ti:"🚙 札幌 → 中富良野", d:"道央道經三笠IC轉道道116號／美唄富良野線，約2小時10分。", drive:true},
+    {t:"12:40", ti:"北星山觀光纜車（視營運狀況）", d:"單人纜車5-7分鐘登頂，可俯瞰富良野盆地與十勝岳連峰全景。夏季限定，抵達時請先確認售票口是否營運，沒開就直接前往富田農場。", map:"北星山ラベンダー園 中富良野", tags:[["季節限定・可能已停駛","warn"]]},
+    {t:"13:30", ti:"富田農場賞花", d:"向日葵、鼠尾草、秋櫻花海，買哈密瓜切片＋薰衣草冰淇淋當輕午餐。", map:"ファーム富田", tags:[["📸 Pikmin","tag"]]},
+    {t:"15:30", ti:"🚙 → 菓子工房フラノデリス", d:"約15分鐘。", drive:true},
+    {t:"16:00", ti:"菓子工房フラノデリス", d:"招牌ふらの牛乳プリン、ドゥーブルフロマージュ起司蛋糕，營業到18:00（LO16:30），週四正常營業。", map:"菓子工房フラノデリス", tags:[["🍮必吃","tag"]]},
+    {t:"16:45", ti:"🚙 → 富良野市區", d:"約10分鐘。", drive:true},
+    {t:"17:00", ti:"富良野市區超市 & Check-in FURANO HOSTEL", d:"逛逛超市買零食飲料備用，放行李稍作休息。", map:"FURANO HOSTEL", tags:[["廚房是否可用未確定","warn"]]},
+    {t:"17:30", ti:"🚙 → 森林精靈露台", d:"約15-20分鐘。", drive:true},
+    {t:"18:00", ti:"森林精靈露台 Ningle Terrace", d:"傍晚點燈最美時刻，木屋工藝品散策。", map:"ニングルテラス", tags:[["📸 必拍","tag"]]},
+    {t:"19:30", ti:"🚙 開車返回市區覓食", d:"", drive:true},
+    {t:"20:00", ti:"富良野市區找晚餐", d:"青年旅館廚房是否可用尚未確認，先安排到市區找餐廳用餐，較保險。", map:"富良野市區 レストラン"},
+    {t:"21:00+", ti:"結算今日花費、早點休息", d:""}
+  ]},
+{ d:"DAY 3", n:"3", date:"8/28（五）", title:"富良野 → 美瑛 → 旭川", theme:"🌾拼布之路・💙青池・🌋火山", note:"備案：若不想吃羊肉，YUKARI 附近有超市可自炊。",
+  items:[
+    {t:"08:00", ti:"簡單早餐、收拾退房", d:""},
+    {t:"08:00", ti:"🚙 → 白金青池", d:"約50分鐘，早上出發避開下午車潮與人潮。", drive:true},
+    {t:"08:50", ti:"白金青池", d:"晨間光線最美、人也少，買藍色甜筒霜淇淋合照。（提醒：太晚到容易塞車，建議上午前往）", map:"青い池 美瑛", tags:[["📸 必拍","tag"],["建議上午前往","warn"]]},
+    {t:"09:30", ti:"🚙 → 美瑛拼布之路", d:"約15分鐘。", drive:true},
+    {t:"09:45", ti:"拼布之路巡禮", d:"Ken & Mary 之樹、七星之樹，隨拍隨停。", map:"美瑛パッチワークの路"},
+    {t:"11:20", ti:"午餐：美瑛咖哩烏龍麵", d:"或去美瑛選果買麵包點心。", map:"美瑛選果"},
+    {t:"13:00", ti:"白鬚瀑布", d:"鐵橋往下看湛藍溪水。", map:"白ひげの滝 美瑛"},
+    {t:"13:50", ti:"十勝岳望岳台", d:"活火山震撼景觀，開車直達觀景台。", map:"十勝岳望岳台"},
+    {t:"14:35", ti:"🚙 → 旭川市區", d:"約1小時15分，建議換手開車。", drive:true},
+    {t:"16:00", ti:"Check-in YUKARI", d:"自助入住，現場平板領密碼。", map:"旭川市1条通5丁目42-1"},
+    {t:"18:30", ti:"晚餐：大黒屋成吉思汗", d:"鼓勵大家一起嘗試北海道羊肉！", map:"成吉思汗 大黒屋 旭川", tags:[["NT$1,200-1,800","cost"]]},
+    {t:"20:00", ti:"AEON 永旺夢樂城", d:"旭川車站旁補給、逛街。", map:"イオンモール旭川駅前"}
+  ]},
+{ d:"DAY 4", n:"4", date:"8/29（六）", title:"旭川 → 札幌（安全帽） → 小樽", theme:"🏍️安全帽・🍰甜點與運河之日・🌃夜景", note:"實際入住時間為15:00，抵達後行李先留車上，直接去吃午餐、逛街；今天要完成 Otaru 自助入住的線上登記；晚餐備好三個方案，看當下心情選。安全帽改排這天，會比原本多花約40-50分鐘（含來回進出市區），實際以當天導航為準。",
+  items:[
+    {t:"08:30", ti:"早餐、退房", d:""},
+    {t:"09:30", ti:"🚙 旭川 → 札幌白石區", d:"道央道，約1小時40分。", drive:true},
+    {t:"11:10", ti:"CuBe札幌白石店", d:"SHOEI安全帽選購，免稅、專業試戴（週六營業無休店風險）。", map:"ライコランド CuBe札幌白石店", tags:[["約30-40分","tag"]]},
+    {t:"11:50", ti:"🚙 札幌 → 小樽", d:"札樽自動車道，約45分。", drive:true},
+    {t:"12:35", ti:"抵達小樽", d:"距離Check-in還早，行李先留車上，直接去吃午餐。", tags:[["Check-in 15:00","warn"]]},
+    {t:"12:45", ti:"午餐（二選一）", d:"① 小樽三角市場：觀光客取向，選擇多、位置在小樽車站旁 ② 鱗友朝市：在地人朝市，價格更親民，營業4:00-14:00（記得要在14:00前抵達），位置離運河北端較近，開車比較方便。", map:"小樽三角市場", tags:[["備案：鱗友朝市","tag"]]},
+    {t:"14:00", ti:"堺町通商店街", d:"LeTAO 雙層起司蛋糕、六花亭/北菓樓伴手禮、音樂盒堂、北一硝子館。", map:"堺町通商店街 小樽"},
+    {t:"15:00", ti:"Check-in Hotel Otaru Canal View", d:"正式入住時間，放行李、停車。", map:"Hotel Otaru Canal View"},
+    {t:"15:30", ti:"繼續堺町通／運河周邊散策", d:"時間充裕，慢慢逛。"},
+    {t:"17:00", ti:"小樽運河 夕陽時刻", d:"瓦斯燈點亮，石造倉庫倒影，最美明信片畫面。", map:"小樽運河", tags:[["📸 必拍","tag"]]},
+    {t:"18:00", ti:"晚餐（三個備案）", d:"① 若鶏時代なると：炸半雞，外皮酥脆 ② 串鳥：北海道知名串燒居酒屋連鎖，氣氛輕鬆 ③ 超市買菜回飯店簡單吃，最省時省錢。", map:"若鶏時代なると 小樽", tags:[["備案：串鳥","tag"],["備案：超市","tag"]]},
+    {t:"19:30", ti:"🚙 → 天狗山纜車站", d:"約10-15分鐘車程。", drive:true},
+    {t:"20:00", ti:"天狗山夜景", d:"北海道三大夜景之一，纜車約4-5分鐘登頂，展望台可俯瞰小樽港與石狩灣。末班上山20:48，別錯過。", map:"小樽天狗山ロープウェイ", tags:[["📸 必看","tag"],["來回約¥1,400/人","cost"]]},
+    {t:"21:00", ti:"🚙 返回飯店休息", d:"", drive:true}
+  ]},
+{ d:"DAY 5", n:"5", date:"8/30（日）", title:"小樽 → 積丹 → 二世谷 → 洞爺湖", theme:"🌊海膽・積丹藍・🗻活火山湖", note:"時間有衝突：余市道の駅9:00才開，若要領水道卡，會比「開店前卡位吃海膽」的策略晚一些。兩者擇一，看你們當天想法。海膽季節提醒：積丹海膽解禁期通常到8月底結束，赤海膽(バフンウニ)較早賣完，8/30這天能不能吃到赤海膽要看運氣，紫海膽(白ウニ)機會較大，也可能因為當季已近尾聲而提早售罄，建議有心理準備、備好第二方案。",
+  items:[
+    {t:"07:00", ti:"退房，超商買小麵包墊胃", d:"留胃口吃海膽！"},
+    {t:"（方案A）", ti:"優先衝海膽：直接前往積丹", d:"跳過余市站點，07:30直接出發，08:45前抵達卡位。", tags:[["優先吃到海膽","tag"]]},
+    {t:"（方案B）", ti:"先領水道卡：道の駅 スペース・アップルよいち", d:"9:00開門，買蘋果派、領余市水道卡，之後再前往積丹，可能會比開店時間晚到，需要候位。", map:"道の駅 スペース・アップルよいち", tags:[["9:00開門","warn"],["水道卡","tag"]]},
+    {t:"08:45", ti:"積丹海膽早午餐", d:"お食事処みさき 或 食堂鱗晃，趕在開門前卡位。若當季赤海膽已售完，可能吃到的是紫海膽或蒸海膽，店家會視漁獲狀況調整菜單。", map:"お食事処みさき 積丹", tags:[["NT$1,500-2,500","cost"]]},
+    {t:"10:00", ti:"神威岬散步", d:"「積丹藍」海景，風大記得帶薄外套。", map:"神威岬", tags:[["📸 必拍","tag"]]},
+    {t:"11:30", ti:"🚙 → 羊蹄山 / 真狩村", d:"二世谷全景之路，約2小時，建議換手。", drive:true},
+    {t:"13:30", ti:"真狩村羊蹄山筆直道路", d:"路邊拍車與火山合照，或去高橋牧場吃泡芙。", map:"羊蹄山 真狩村"},
+    {t:"14:15", ti:"🚙 → 洞爺湖 Lake Hill Farm", d:"約1小時。", drive:true},
+    {t:"15:15", ti:"Lake Hill Farm ＆ 筒倉展望台", d:"義式冰淇淋＋洞爺湖全景眺望。", map:"レイクヒルファーム 洞爺湖"},
+    {t:"16:30", ti:"Check-in 洞爺湖萬世閣", d:"放行李，泡湯。", map:"洞爺湖萬世閣湖畔露台飯店", tags:[["現場加付入湯稅","warn"]]},
+    {t:"18:00", ti:"晚餐", d:"飯店自助餐或溫泉街「望羊蹄」漢堡排。"},
+    {t:"20:45", ti:"🎆 洞爺湖夏季煙火大會", d:"湖畔散步看，或房間/露天風呂角度看。", tags:[["📸 必看","tag"]]}
+  ]},
+{ d:"DAY 6", n:"6", date:"8/31（一）", title:"洞爺湖 → 白老 → 苫小牧 → 惠庭 → 札幌還車", theme:"🦀毛蟹・🛝溜滑梯", note:"路線已確認可行（時間抓得出來，但整天景點多，建議每站別逗留太久）。安全帽已改排Day4，這天更寬裕。晚餐不訂位，備案都列在最後一項，看當下狀況選。",
+  items:[
+    {t:"08:00", ti:"晨間溫泉、早餐、退房", d:"早上再泡一次湯，湖景與昨晚不同。"},
+    {t:"09:30", ti:"🚙 洞爺湖 → 白老", d:"道央道，虻田洞爺湖IC上→白老IC下，約1小時。", drive:true},
+    {t:"11:00", ti:"午餐：白老（毛蟹／白老牛）", d:"預算優先推薦①「かに王」：從水槽選活毛蟹、現場現燙，網路評價CP值最高、價格實在 ② かに御殿：規模較大、觀光取向，價格略高 ③ 白老牛レストラン：想吃和牛可以這天改吃白老牛，跟螃蟹擇一。提醒：白老主打毛蟹和白老牛，不是帝王蟹產地，帝王蟹要留到別的機會，且毛蟹在地產季約到8月中旬，這天吃到的可能是其他產地的貨源。", map:"かに王 白老", tags:[["推薦：かに王（平價）","tag"],["NT$800-1,500/人","cost"],["備案：白老牛レストラン","tag"]]},
+    {t:"12:30", ti:"🚙 白老 → 苫小牧", d:"白老IC→苫小牧西IC，約20分。", drive:true},
+    {t:"13:00", ti:"苫小牧 金太郎の池公園", d:"超長溜滑梯，玩沙玩水放電一下。", map:"金太郎の池 苫小牧"},
+    {t:"13:45", ti:"COCOTOMA 觀光案內所", d:"領苫小牧水道卡。", map:"COCOTOMA 苫小牧", tags:[["水道卡","tag"]]},
+    {t:"14:15", ti:"🚙 苫小牧 → 惠庭", d:"苫小牧西IC→恵庭IC，約20分。", drive:true},
+    {t:"14:45", ti:"道の駅 花ロードえにわ", d:"買伴手禮，領惠庭水道卡。", map:"道の駅 花ロードえにわ", tags:[["水道卡","tag"]]},
+    {t:"15:30", ti:"🚙 惠庭 → 札幌", d:"約20-30分鐘。", drive:true},
+    {t:"16:00", ti:"🚙 → 蒙特利飯店", d:"", drive:true},
+    {t:"16:30", ti:"卸行李、加滿油、還車", d:"先開到蒙特利飯店卸行李，再去加油、還車。", map:"Hotel Monterey Sapporo"},
+    {t:"17:00", ti:"Check-in 蒙特利飯店", d:"休息整理。"},
+    {t:"18:30", ti:"晚餐（不訂位，看狀況三選一）", d:"① 伝（DEN）螃蟹燒肉吃到飽：想吃的話可以現場問候位，但通常建議先訂位，人多可能要等 ② 薄野/大通周邊其他螃蟹料理店：現場候位單點螃蟹鍋或螃蟹丼，不用整套吃到飽 ③ 先簡單吃拉麵/居酒屋，把帝王蟹留到明天中午的場外市場（免預約，走進去就吃得到）。", map:"すすきの 螃蟹料理", tags:[["NT$800-1,617/人視選擇","cost"],["備案：明天再吃","tag"]]},
+    {t:"20:00", ti:"大通公園 & 電視塔夜景", d:"或去狸小路唐吉訶德探勘藥妝價格。", map:"大通公園 札幌"}
+  ]},
+{ d:"DAY 7", n:"7", date:"9/1（二）", title:"札幌市區大巡禮", theme:"🍣壽司・🍨聖代", note:"安全帽已改在Day4買，今天時間更寬裕。",
+  items:[
+    {t:"09:30", ti:"睡飽起床，行李寄放飯店", d:""},
+    {t:"10:30", ti:"とりとん円山店 抽號碼牌", d:"11:00開門，卡第一批入座。", map:"とりとん 円山店 札幌"},
+    {t:"11:00", ti:"とりとん壽司午餐", d:"推薦招牌「ほたて」干貝。", tags:[["NT$800-1,200","cost"]]},
+    {t:"12:30", ti:"🚇 地鐵 → 大通站", d:"", drive:true},
+    {t:"13:00", ti:"大通公園觀光案內所", d:"領「雪初音」限定水道卡，順遊大通公園。", map:"大通公園 観光案内所", tags:[["水道卡","tag"]]},
+    {t:"13:30", ti:"JR札幌站北口 L-Plaza", d:"領札幌市徽章水道卡，順路即可。", map:"札幌駅北口 Lプラザ", tags:[["水道卡","tag"]]},
+    {t:"14:00", ti:"札幌車站商圈購物", d:"大丸百貨、Stella Place — 六花亭、北菓樓、ROYCE' 伴手禮，時間充裕可以慢慢逛。", map:"大丸札幌店"},
+    {t:"17:00", ti:"狸小路商店街", d:"唐吉訶德、大國藥妝、松本清，免稅藥妝血拼。", map:"狸小路商店街"},
+    {t:"19:30", ti:"晚餐：居酒屋或拉麵", d:"", tags:[["NT$500-800","cost"]]},
+    {t:"20:30", ti:"🍨 札幌夜間聖代", d:"Parfaiteria PaL 或「パフェ、珈琲、酒、佐藤」，建議20:00前到避開排隊。", map:"Parfaiteria PaL 札幌", tags:[["NT$300-400","cost"]]},
+    {t:"21:30+", ti:"加碼：JR塔展望室 T38", d:"回蒙特利前，登高看夜景收尾。", map:"JRタワー展望室 T38"}
+  ]},
+{ d:"DAY 8", n:"8", date:"9/2（三）", title:"札幌 → 新千歲 → 返程", theme:"✈️賦歸", note:"",
+  items:[
+    {t:"上午", ti:"蒙特利飯店退房", d:"步行至 JR 札幌站。"},
+    {t:"—", ti:"JR快速機場線 → 新千歲機場", d:"約40分鐘。", tags:[["NT$242","cost"]]},
+    {t:"10:00前", ti:"抵達機場", d:"check-in、免稅最後採買。"},
+    {t:"12:05", ti:"IT235 起飛", d:"CTS → TPE。", tags:[["✈ IT235","tag"]]},
+    {t:"15:20", ti:"抵達桃園機場", d:"旅程結束，平安回家！"}
+  ]}
+];
+
+const hotels = [
+  {day:"Day 0", name:"綠藤輕旅 Lütel Hotel", note:"桃園機場附近，凌晨有接送服務", cost:"NT$1,200", q:"綠藤輕旅 Lutel Hotel 桃園"},
+  {day:"Day 1", name:"船舶花園飯店", note:"Vessel Hotel Campana Susukino，薄野市區", cost:"NT$2,333", q:"Vessel Hotel Campana Susukino"},
+  {day:"Day 2", name:"FURANO HOSTEL", note:"個室C房，含早餐與免費車位", cost:"NT$987", q:"FURANO HOSTEL"},
+  {day:"Day 3", name:"YUKARI (Room-B)", note:"旭川，無人自助入住，需提前線上登記＋護照上傳", cost:"NT$1,578", q:"旭川市1条通5丁目42-1"},
+  {day:"Day 4", name:"Hotel Otaru Canal View", note:"小樽，自助入住，Check-in 15:00後、無法提前寄放行李", cost:"NT$1,502", q:"Hotel Otaru Canal View"},
+  {day:"Day 5", name:"洞爺湖萬世閣湖畔露台飯店", note:"一泊二食，現場加付入湯稅／住宿稅", cost:"NT$5,000", q:"洞爺湖萬世閣湖畔露台飯店"},
+  {day:"Day 6-7", name:"札幌蒙特利飯店", note:"連住2晚，還車後步行可達", cost:"NT$2,400", q:"Hotel Monterey Sapporo"}
+];
+
+const packing = {
+  "證件與票券":["護照（效期6個月以上）","駕照日文譯本（租車必備）","機票、訂房確認信截圖","YUKARI／Otaru Canal View 線上登記連結"],
+  "衣物":["薄外套（早晚溫差大）","舒適走路鞋（拼布之路、神威岬需步行）"],
+  "3C與生活用品":["行動電源","轉接頭（日本電壓100V）","常備藥品"],
+  "現金與支付":["日圓現金（自助入住／道の駅等現金場合）","信用卡（免稅購物）"]
+};
+
+const budgetKnown = [
+  ["機票（個人）", "15,400", null],
+  ["租車（分攤）", "4,778", "22,753"],
+  ["HEP 5日券（分攤）", "672", "3,200"],
+  ["Day2 FURANO HOSTEL", "987", "4,700"],
+  ["Day3 YUKARI", "1,578", "7,517"],
+  ["Day4 Hotel Otaru Canal View", "1,502", "7,150"],
+  ["Day5 洞爺湖（個人）", "5,000", null],
+  ["機場巴士（分攤）", "273", "1,300"],
+  ["JR快速機場線（分攤）", "242", "1,150"],
+  ["Day0 綠藤輕旅", "1,200", null],
+  ["Day1 船舶花園飯店", "2,333", "11,110"],
+  ["Day6-7 蒙特利飯店", "2,400", null],
+  ["DEN 螃蟹吃到飽", "1,617", "7,700"],
+  ["大黒屋成吉思汗", "1,500", "7,140"],
+  ["海膽丼", "2,000", "9,520"],
+  ["とりとん壽司", "1,000", "4,760"],
+  ["夜間聖代", "350", "1,670"],
+  ["湯咖哩", "350", "1,670"],
+  ["eSIM 網路卡", "500", null]
+];
+
+// ---------- render days ----------
+const dayRail = document.getElementById('dayRail');
+const dayHero = document.getElementById('dayHero');
+const dayTimeline = document.getElementById('dayTimeline');
+const dayNote = document.getElementById('dayNote');
+
+function iconSvg(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.3"/></svg>';
+}
+
+function renderDay(idx){
+  const day = days[idx];
+  [...dayRail.children].forEach((c,i)=>c.classList.toggle('active', i===idx));
+  dayHero.innerHTML = `
+    <div class="day-hero">
+      <div class="theme-label">${day.d} 路線主題</div>
+      <h2>${day.title}</h2>
+      <div class="date">${day.date} ・ ${day.theme}</div>
+    </div>`;
+  dayTimeline.innerHTML = day.items.map(it=>{
+    const tags = (it.tags||[]).map(([label,cls])=>`<span class="tag ${cls}">${label}</span>`).join('');
+    const mapBtn = it.map ? `<a class="map-btn" href="${MAPS(it.map)}" target="_blank">${iconSvg()}導航</a>` : '';
+    return `<div class="tl-item ${it.drive?'drive':''}">
+      <div class="tl-time">${it.t}</div>
+      <div class="tl-body">
+        <p class="tl-title">${it.ti}</p>
+        ${it.d?`<p class="tl-desc">${it.d}</p>`:''}
+        ${(tags||mapBtn) ? `<div class="tl-tags">${tags}</div>` : ''}
+        ${mapBtn}
+      </div>
+    </div>`;
+  }).join('');
+  if(day.note){
+    dayNote.style.display='block';
+    dayNote.innerHTML = '💡 ' + day.note;
+  } else {
+    dayNote.style.display='none';
+  }
+}
+
+days.forEach((day,i)=>{
+  const chip = document.createElement('div');
+  chip.className = 'day-chip' + (i===0?' active':'');
+  chip.innerHTML = `<span class="d">${day.d.replace('DAY ','D')}</span><span class="n">${day.n}</span>`;
+  chip.addEventListener('click', ()=>renderDay(i));
+  dayRail.appendChild(chip);
+});
+renderDay(0);
+
+// ---------- render hotels ----------
+document.getElementById('hotelList').innerHTML = hotels.map(h=>`
+  <div class="card">
+    <h3><span class="num">${h.day}</span>${h.name}</h3>
+    <div class="row"><div class="l">${h.note}</div><div class="r gold">${h.cost}</div></div>
+    <a class="map-btn" href="${MAPS(h.q)}" target="_blank">${iconSvg()}導航去飯店</a>
+  </div>
+`).join('');
+
+// ---------- render packing ----------
+document.getElementById('packingList').innerHTML = Object.entries(packing).map(([cat,items])=>`
+  <div class="card">
+    <h3>${cat}</h3>
+    ${items.map((it,i)=>`
+      <div class="check-item">
+        <input type="checkbox" id="pk-${cat}-${i}">
+        <label for="pk-${cat}-${i}">${it}</label>
+      </div>
+    `).join('')}
+  </div>
+`).join('');
+
+// ---------- render budget ----------
+document.getElementById('budgetKnown').innerHTML = budgetKnown.map(([l,twd,jpy])=>`
+  <div class="row"><div class="l">${l}</div><div class="r">NT$ ${twd}${jpy?`<br><span style="font-weight:400;color:var(--text-soft);">¥${jpy}</span>`:''}</div></div>
+`).join('');
+
+// ---------- bottom nav ----------
+const views = ['days','transport','hotels','packing','budget'];
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = btn.dataset.view;
+    views.forEach(v=>{
+      document.getElementById('view-'+v).classList.toggle('active', v===target);
+    });
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b===btn));
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
